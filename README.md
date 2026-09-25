@@ -6,9 +6,15 @@
 > **ECHO-4 OS 1.8.1-4709277**. Compatibility with other game builds is not
 > claimed.
 
+Version-specific builds are kept in separate branches. Check the repository's
+[branch list](https://github.com/geloczi/bl4-2player-splitscreen/branches) and
+select the branch matching your game build; the default branch may contain
+work in progress.
+
 The original BL4SS mod was created by
-[TitanNav](https://github.com/TitanNav). This compatibility build is based on
-upstream version **0.9.1** and identifies itself as **0.9.1.181**.
+[TitanNav](https://github.com/TitanNav). This fork uses version **1.8.1.0**: the
+first three numbers identify the target game version, and the final number is
+the mod build number.
 
 - [Original project](https://github.com/TitanNav/bl4-2player-splitscreen)
 - [Original README and full mod documentation](https://github.com/TitanNav/bl4-2player-splitscreen/blob/main/README.md)

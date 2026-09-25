@@ -1,6 +1,6 @@
 [project]
 name = "bl4ss"
-version = "0.9.1.181"
+version = "1.8.1.0"
 description = "Two-player local split-screen for Borderlands 4 on PC: Player 2 joins on the main menu, picks or creates a character, and arrives in the world."
 authors = [{ name = "TitanNav" }]
 requires-python = ">=3.13"
