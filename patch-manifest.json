@@ -1,0 +1,12 @@
+{
+  "original_mod_sha256": "b2a7a9cbf8ee597626668dbe749d0173e503413a560a8dc3287f373ebdbcdcc8",
+  "patched_mod_sha256": "d545d7dcc56b53d389b0857d32f854b4b7ea4b89207e47bd7c4189b96f582eed",
+  "game_exe_sha256": "3cae7ca20bde46500b1f0577a01bf7ad95752dc2142e829c3b79e5494bfa7059",
+  "game_version_reported": "1.8.1-4709277",
+  "pe_timestamp": "0x6a2c7db2",
+  "size_of_image": "0x34f6e000",
+  "setter_rva": "0x0b54a9b0",
+  "approval_rva": "0x0b3b16c0",
+  "ready_flag_offset": "0x32c1",
+  "validation": "Offline checks passed; user confirmed the installed patch works in game on 2026-09-23. Extended gameplay not independently verified."
+}

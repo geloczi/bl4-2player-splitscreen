@@ -1,0 +1,71 @@
+--- original/bl4ss/native.py
++++ patched/bl4ss/native.py
+@@ -61,7 +61,7 @@
+ class Setter:
+     address: int
+     flag_offset: int
+-    how: str  # "signature" or "pinned"
++    how: str  # "signature", "pinned", or "1.8.1-verified"
+ 
+ 
+ def read(address: int, size: int) -> bytes | None:
+@@ -108,8 +108,59 @@
+     return setter_hits, approval_hits
+ 
+ 
++
++# Local compatibility profile for the user's 1.8.1 / 4709277 executable.
++# Statically verified against SHA256:
++# 3cae7ca20bde46500b1f0577a01bf7ad95752dc2142e829c3b79e5494bfa7059
++# This build inlines more work in the setter (larger stack frame) and uses
++# near conditional jumps in the approval check. The upstream signatures
++# therefore do not match. All bytes below are instructions with only
++# image-relative references: ASLR does not change these byte sequences.
++# Require the PE identity AND the setter, approval check, and native caller.
++# Never substitute an unchecked address or write the ready flag directly.
++LEGACY_TIMESTAMP = 0x6A2C7DB2
++LEGACY_SIZE_OF_IMAGE = 0x34F6E000
++LEGACY_SETTER_RVA = 0x0B54A9B0
++LEGACY_FLAG_OFFSET = 0x32C1
++LEGACY_GUARDS = (
++    ("setter", LEGACY_SETTER_RVA, bytes.fromhex(
++        "415741565657534881ec80000000488b057b1ffc054831e04889442478"
++        "80b9c1320000000f85750100004889cec681c132000001e817dedcf9"
++        "4885c00f84da000000488bb8f00100004885ff0f84ca000000"
++    )),
++    ("approval", 0x0B3B16C0, bytes.fromhex(
++        "80bec1320000000f85e7feffff488b86980300004885c00f843bfeffff"
++        "f6809a030000080f842efeffffe9c5feffff"
++    )),
++    ("native caller", 0x0B09539E, bytes.fromhex(
++        "4584e475084c89f9e805564b00"
++    )),
++)
++
++
++def _locate_legacy(timestamp: int, size_of_image: int) -> Setter | None:
++    if (timestamp, size_of_image) != (LEGACY_TIMESTAMP, LEGACY_SIZE_OF_IMAGE):
++        return None
++    for label, rva, expected in LEGACY_GUARDS:
++        if read(BASE + rva, len(expected)) != expected:
++            logging.warning(
++                f"{LOG_PREFIX} 1.8.1 compatibility: {label} validation failed "
++                f"at +{rva:#x}; refusing this build-specific address"
++            )
++            return None
++    logging.info(
++        f"{LOG_PREFIX} ready setter located by 1.8.1 compatibility "
++        f"(+{LEGACY_SETTER_RVA:#x}, flag {LEGACY_FLAG_OFFSET:#x}; "
++        "setter + approval + native caller verified)"
++    )
++    return Setter(BASE + LEGACY_SETTER_RVA, LEGACY_FLAG_OFFSET, "1.8.1-verified")
++
++
+ def locate() -> Setter | None:
+     timestamp, size_of_image, sections = _pe_info()
++    legacy = _locate_legacy(timestamp, size_of_image)
++    if legacy is not None:
++        return legacy
+     pinned = timestamp == PIN_TIMESTAMP and size_of_image == PIN_SIZE_OF_IMAGE
+     code = next(((va, vs) for _n, va, vs, ch in sections if ch & IMAGE_SCN_MEM_EXECUTE), None)
+     if code is not None:
