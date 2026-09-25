@@ -12,9 +12,7 @@ select the branch matching your game build; the default branch may contain
 work in progress.
 
 The original BL4SS mod was created by
-[TitanNav](https://github.com/TitanNav). This fork uses version **1.8.1.0**: the
-first three numbers identify the target game version, and the final number is
-the mod build number.
+[TitanNav](https://github.com/TitanNav).
 
 - [Original project](https://github.com/TitanNav/bl4-2player-splitscreen)
 - [Original README and full mod documentation](https://github.com/TitanNav/bl4-2player-splitscreen/blob/main/README.md)
