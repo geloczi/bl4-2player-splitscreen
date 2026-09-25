@@ -28,7 +28,7 @@ from . import entitlements, native, players, render
 if TYPE_CHECKING:
     from unrealsdk.unreal import BoundFunction, UObject, WrappedStruct
 
-__version__ = "1.8.1.0"
+__version__ = "0.9.1.181"
 __author__ = "TitanNav"
 
 LOG_PREFIX = "[BL4SS]"

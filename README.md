@@ -45,3 +45,13 @@ guard passes. It does not patch the executable or write the ready flag directly.
 The implementation is in `mod/bl4ss/native.py`. A focused readable diff is
 provided in `native-compatibility.patch`, and `patch-manifest.json` records the
 tested executable identity and packaged-mod hashes.
+
+## Mod version locations
+
+The mod version is defined in two places, which must remain in sync:
+
+- `mod/bl4ss/__init__.py` — `__version__`
+- `mod/bl4ss/pyproject.toml` — `version` under `[project]`
+
+`tools/build_sdkmod.py` reads the value from `pyproject.toml` when naming the
+release archive.
